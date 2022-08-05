@@ -48,7 +48,7 @@ export default function AllUsers() {
 
 const showUserCards = function (data) {
     return data.map(item => (
-        <UserCard
+      <UserCard
             name={item.userName}
             town={item.town}
             email={item.email}

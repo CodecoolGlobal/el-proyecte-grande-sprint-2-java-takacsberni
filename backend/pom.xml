@@ -15,7 +15,8 @@
     <name>el-proyecte-grande-sprint-2-java-takacsberni</name>
     <description>el-proyecte-grande-sprint-2-java-takacsberni</description>
     <properties>
-        <java.version>11</java.version>
+      <java.version>11</java.version>
+      <project.build.sourceDirectory>src/backend/main/java</project.build.sourceDirectory>
     </properties>
     <dependencies>
         <dependency>
