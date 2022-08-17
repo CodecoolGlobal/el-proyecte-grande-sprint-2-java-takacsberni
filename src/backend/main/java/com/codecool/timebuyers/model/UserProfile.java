@@ -1,10 +1,10 @@
 package com.codecool.timebuyers.model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -12,7 +12,8 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @Builder
-public class UserProfile {
+@Getter
+public class UserProfile implements UserDetails, Serializable {
 
 
     @Id
@@ -37,11 +38,40 @@ public class UserProfile {
     private List<Task> taskToTake;
     private int rating;
     private String photo;
-
+    //private boolean enabled = true;
 
     @Override
     public String toString() {
         return "userName: " + userName;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

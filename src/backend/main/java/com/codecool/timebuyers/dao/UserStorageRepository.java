@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserStorageRepository extends JpaRepository<UserProfile, UUID> {
     UserProfile findByEmail(String email);
-    UserProfile findByUserName(String username);
+    Optional<UserProfile> findByUserName(String username);
+
+    //Optional<UserProfile> findByUsername(String username);
     List<UserProfile> findAllByUserStatus(UserStatus userStatus);
 
     @Query(value="SELECT * FROM user_profile\n" +

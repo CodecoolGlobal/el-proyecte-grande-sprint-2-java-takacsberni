@@ -6,9 +6,10 @@ import com.codecool.timebuyers.model.Task;
 import com.codecool.timebuyers.model.UserProfile;
 import com.codecool.timebuyers.model.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
+
 
 @Component
-public class UserStorageService {
+public class UserStorageService implements UserServiceInterface {
     @Autowired
     UserStorageRepository userStorageRepository;
 
@@ -27,7 +30,7 @@ public class UserStorageService {
         return userStorageRepository.findByEmail(email);
     }
 
-    public UserProfile getUserByUsername(String username){
+    public Optional<UserProfile> getUserByUsername(String username){
         return userStorageRepository.findByUserName(username);
     }
 
@@ -38,7 +41,7 @@ public class UserStorageService {
         userStorageRepository.save(newUserProfile);
     }
     public void deleteUser(String userName){
-        userStorageRepository.delete(userStorageRepository.findByUserName(userName));
+      //  userStorageRepository.delete(userStorageRepository.findByUserName(userName));
     }
     public UserProfile updateUserByUserName(UUID id, UserProfile updatedUserProfile){
         if (getUserProfileById(id) != null){
@@ -82,4 +85,24 @@ public class UserStorageService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public UserProfile save(UserProfile user) {
+        return userStorageRepository.save(user);
+    }
+
+    @Override
+    public boolean usernameExists(String username) {
+        return userStorageRepository.findByUserName(username).isPresent();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserProfile user = userStorageRepository
+                .findByUserName(username)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(format("User with username - %s, not found", username))
+                );
+
+        return user;
+    }
 }

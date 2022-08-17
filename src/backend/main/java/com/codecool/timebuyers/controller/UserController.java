@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping(value = "api/users/get/username/{username}")
-    public UserProfile getUserByUsername(@PathVariable String username) {
+    public Optional<UserProfile> getUserByUsername(@PathVariable String username) {
         return userStorageService.getUserByUsername(username);
     }
 
@@ -61,7 +62,7 @@ public class UserController {
 
         UserProfile savedUser = userStorageRepository.save(newUser);
 
-        String uploadDir = "user-photos/" + savedUser.getUserName();
+        String uploadDir = "user-photos/" + savedUser.getUsername();
 
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         userStorageService.addUser(newUser);
