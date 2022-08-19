@@ -32,15 +32,30 @@ export default function RegisterForm() {
 
     // Handling the form submission
     const handleSubmit = (e) => {
+        console.log(this.state.username);
         e.preventDefault();
         if (username === '' || email === '' || password === '') {
             setError(true);
         } else {
             setSubmitted(true);
             setError(false);
+            fetch('/api/new-user', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: this.state.username,
+                    email: this.state.email,
+                    password: this.state.password
+                })
+            })
+                .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err));
         }
     };
-
     // Showing success message
     const successMessage = () => {
         return (
@@ -79,7 +94,7 @@ export default function RegisterForm() {
                {successMessage()}
            </div>
 
-           <form action="/api/new-user" method="post" encType="multipart/form-data">
+           <form method="post">
                 <label className="label">Username</label>
                 <input onChange={handleName} className="input"
                        value={username} type="text" />
@@ -93,7 +108,7 @@ export default function RegisterForm() {
                        value={password} type="password" />
 
                 <div>
-                    <label>Photos: </label>
+                    <label>Photos: </label>timebuyers2
                     <input type="file" name="image" accept="image/png, image/jpeg" />
                 </div>
 

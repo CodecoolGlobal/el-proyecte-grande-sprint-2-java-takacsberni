@@ -54,17 +54,18 @@ public class UserController {
 //        userStorageService.addUser(newUser);
 //    }
 
+//    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping(value = "api/new-user")
-    public void addUser(@RequestBody UserProfile newUser, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+    public void addUser(@RequestBody UserProfile newUser) throws IOException {
 
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        newUser.setPhoto(fileName);
+//        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+//        newUser.setPhoto(fileName);
 
-        UserProfile savedUser = userStorageRepository.save(newUser);
+//        UserProfile savedUser = userStorageRepository.save(newUser);
 
-        String uploadDir = "user-photos/" + savedUser.getUsername();
+//        String uploadDir = "user-photos/" + savedUser.getUsername();
 
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+//        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         userStorageService.addUser(newUser);
     }
 
